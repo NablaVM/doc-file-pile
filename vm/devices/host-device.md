@@ -16,6 +16,7 @@ Don't use registers 10 - 15 without a clear goal. They are reserved for device o
 |    IO      | 0x0A    | User and disk io operations |
 | Network    | 0x0B    | TCP/UDP Network operations  |
 | Host       | 0x0C    | Host operations             |
+| DataStore  | 0x0D    | Data Store operations       |
 
 # Register 10 Decodes
 
@@ -44,7 +45,7 @@ SUB-IDs:
 
 **Overview**
 
-The system command is a set of functionality that allows the vm to interact with a small set of the host system. 
+The host command is a set of functionality that allows the vm to interact with a small set of the host system. 
 
 
 **clock**
