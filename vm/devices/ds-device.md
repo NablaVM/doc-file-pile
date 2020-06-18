@@ -36,6 +36,7 @@ SUB-IDs:
 |    copy         |  5    | Copy data                      |
 |    store        |  10   | Store some data                |
 |    load         |  20   | Load some data                 |
+|    size         |  30   | Retrieve data size             |
 |    reset        |  50   | Clear all data from memory     |
 
 **Overview**
@@ -144,6 +145,22 @@ the start address is greater than the end address, or the given address is not f
 
 Whatever is in the index stored in the address in r11 will be pushed onto global stack. Upto the caller
 to determine size and what to do with the data.
+
+**size**
+
+* Register 10
+
+           ID         SUB-ID    [-------------------------- UNUSED ---------------------------------]
+        0001 1110 | 0011 0010  | 0000 0000 | 0000 0000 | 0000 0000 | 0000 0000 | 0000 0000 | 0000 0000 
+
+* Register 11
+
+        [------------------------------------- DATA ID ---------------------------------------------]
+        0000 0000 | 0000 0000 | 0000 0000 | 0000 0000 | 0000 0000 | 0000 0000 | 0000 0000 | 0000 0000 
+
+
+If the request could be executed, a 0 will be in r11, otherwise a 1 will be in r11.
+Result in r12
 
 **reset**
 
