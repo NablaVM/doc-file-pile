@@ -126,9 +126,11 @@ If 'd' is specified and the value in a given register is not a floating point, t
 | Instruction | Arg1     | Description                                       |
 |---          |---       |---                                                |
 | jmp         | label    | Jump to label                                     |
+| @jmp        | label    | Jump to label - Store location to come back       |
 | call        | function | Call function - return address stored call stack  |
 | pcall       | function | Parallel call - Spawns a new execution context    |
 | ret         |          | Return to the address stored on top of call stack |
+| @ret        |          | Return to the address stored on top of jmp stack  |
 | yield       |          | Yield operation of function to caller             |
 
 ## Exit
@@ -340,6 +342,13 @@ The jump operation is straight forward. The only data in the jump is the address
     INS    ID   [ ---------------   ADDRESS  --------------- ]  [ ---------- UNUSED ----------- ]
     111111 00 | 1111 1111 | 1111 1111 | 1111 1111 | 1111 1111 | 1111 1111 | 1111 1111 | 1111 1111
 
+**@jmp** - Jump
+
+The jump operation is straight forward. The only data in the jump is the address to jump to.
+
+    INS    ID   [ ---------------   ADDRESS  --------------- ]  [ ---------- UNUSED ----------- ]
+    111111 00 | 1111 1111 | 1111 1111 | 1111 1111 | 1111 1111 | 1111 1111 | 1111 1111 | 1111 1111
+
 **call** - Call
 
 Upon executing the call instruction, the address immediately after call's address will be stored in
@@ -368,6 +377,14 @@ address is on the top of the system stack, and then pop it.
 
 Note: Implicit returns happen at the bottom of a function. If the bottom of the function is reached, 
 a return will occur.
+
+**@ret** - Return
+
+The return address will be on the top of the jump stack. Executing return will return to whatever
+address is on the top of the jump stack, and then pop it. 
+
+    INS    ID  [ ----------------------------------- UNUSED ----------------------------------- ]
+    111111 00 | 1111 1111 | 1111 1111 | 1111 1111 | 1111 1111 | 1111 1111 | 1111 1111 | 1111 1111
 
 **yield** - Yield
 
@@ -438,6 +455,11 @@ A stack accessed by 'gs' for 'global stack' that accesses the stack used across 
 ### Call stack
 
 Not able to be accessed by software directly. The system stack is pushed and popped by calls and returns.
+
+### Jump Stack
+
+Used to track a local function's tagged jumps so they can be returned from with a tagged return (@jmp and @ret). The jump stack is local 
+to each function, and 
 
 ## Forbidden Instructions 
 
